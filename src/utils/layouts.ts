@@ -77,7 +77,6 @@ export const renderLayout = (
 
   // Common font setup
   const timeFont = '42px "Inter", sans-serif'; // Bigger time font
-  const titleFont = '60px "Caveat", cursive, sans-serif';
 
   // Default Watermark function
   const drawWatermark = () => {
