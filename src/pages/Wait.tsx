@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Copy, CheckCircle2 } from 'lucide-react';
+import { Share2, CheckCircle2 } from 'lucide-react';
 import { p2pBackend, Room } from '../utils/p2pBackend';
 
 export function Wait() {
@@ -25,9 +25,17 @@ export function Wait() {
   const inviteLink = `${window.location.origin}/join/${roomId}`;
 
   const copyLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (navigator.share) {
+      navigator.share({
+        title: 'Moment - 加入我的时刻',
+        text: '点击链接，与我同刻记录：',
+        url: inviteLink,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(inviteLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -54,14 +62,10 @@ export function Wait() {
         等待对方加入
       </h2>
       <p className="text-white/50 font-light text-sm mb-12 z-10">
-        分享链接给你的另一半
+        分享给你的另一半
       </p>
 
       <div className="glass w-full max-w-sm rounded-2xl p-6 z-10 flex flex-col items-center">
-        <div className="bg-white/5 w-full p-4 rounded-xl text-left text-xs text-white/60 mb-6 border border-white/10 font-mono break-all">
-          {inviteLink}
-        </div>
-        
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -75,8 +79,8 @@ export function Wait() {
             </>
           ) : (
             <>
-              <Copy className="w-4 h-4" />
-              复制邀请链接
+              <Share2 className="w-4 h-4" />
+              分享邀请链接
             </>
           )}
         </motion.button>
