@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set timeout -1
+spawn npx surge dist --domain moment-app-v2.surge.sh
+expect "email:"
+send "moment-app-v2@example.com\r"
+expect "password:"
+send "TraeApp123!\r"
+expect "password:"
+send "TraeApp123!\r"
+expect eof
