@@ -22,7 +22,17 @@ export function Wait() {
     return () => unsubscribe();
   }, [roomId, navigate]);
 
-  const inviteLink = `${window.location.origin}/join/${roomId}`;
+  // Get the correct base URL depending on the environment
+  const getBaseUrl = () => {
+    // If we're running inside the Capacitor Android app (file:// protocol or similar)
+    // we should use the public production URL so the link works for the other person
+    if (window.location.protocol === 'file:' || window.location.hostname === 'localhost') {
+      return 'https://moment-trae-app.loca.lt';
+    }
+    return window.location.origin;
+  };
+
+  const inviteLink = `${getBaseUrl()}/join/${roomId}`;
 
   const copyLink = () => {
     if (navigator.share) {
